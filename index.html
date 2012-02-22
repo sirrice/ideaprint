@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Recently Typed URLs</title>
+    <style>
+      body {min-width: 500px;}
+      .chart_label {font-size: 9pt;}
+      .bar {stroke: white; stroke-width: 5px; }
+      td {vertical-align: top;}
+      td.table_count {font-size: 15pt; width: 50px; margin-left: 10px;}
+      td.table_domain{font-family: garamond; vertical-align: middle;}
+    </style>
+    <script src='jquery.js'></script>    
+    <script src='util.js'></script>
+    <script src="date.js"></script>
+    <script src='d3/d3.js'></script>    
+    <script src='d3/lib/colorbrewer/colorbrewer.js'></script>
+    <script>
+    function loadData() {
+      var daysago = $("#daysago").val();
+      $("#content").empty().text("processing...");
+      chrome.extension.sendRequest({'method' : 'getData', 'daysago' : daysago}, function(resp) {
+        //alert("got response!");
+        data = resp['data'];
+        printResults(data);
+      })      
+    }
+
+    $(function() {
+      loadData();
+      // var _counts = null;
+      // function loadData() {
+      //   try {
+      //     _counts = JSON.parse(window.localStorage['_counts_']);
+      //   } catch (e) {
+      //     _counts = null;
+      //   }
+      //   if (_counts == null)
+      //     setTimeout(loadData, 1000);
+        
+      //   printResults(_counts);
+      // }
+      // loadData();
+
+    });
+
+
+
+    </script>
+  </head>
+
+  <body>
+  <form onsubmit="return false;">
+    <input id="daysago"/>
+    <input type="submit" value="Click it!" onclick="loadData()"/>
+  </form>
+  <table width="100%"><tr>
+  <td width="300"><table id="content"/></table>
+  <td width="250"><div id="graph" /></td>
+  </tr></table>
+  </body>
+</html>

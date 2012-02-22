@@ -1,0 +1,15 @@
+{
+  "name": "Ideaprint",
+  "version": "0.1",
+  "description": "Monitors your history and identifies owners of your content",
+  "permissions": ["history", "tabs", "extension", 
+  				  "browserAction", "webRequest",
+  				  "*://*.wikipedia.org",
+  				  "*://*.wikipedia.com"],
+  "background_page": "background_page.html",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "index.html",
+    "default_title": "Ideaprint"
+  }
+}

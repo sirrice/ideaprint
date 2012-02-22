@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<script src="jquery.js"></script>
+<script src="util.js"></script>
+<script>
+
+// add event for clicking on badge
+
+// add event for ...?
+
+// add event that actually processes and analyzes code in the background
+
+alldomains = [];
+for (var key in window.localStorage) {
+  alldomains.push(key);
+}
+$.each(alldomains, function(idx,domain){window.localStorage.removeItem(domain);});
+alldomains = [];
+
+
+function cb_hitem(hitem, data) {
+}
+
+function cb_done(data) {
+  saveResults(data);
+}
+
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {
+    resp = {};
+    if (request.method == "getData") {
+      console.log(JSON.stringify(request) + "\t" + request.daysago);
+      daysago = (request.daysago)? parseFloat(request.daysago) : 1;
+      interval = 1000 * 60 * 60 * 24 * daysago;
+      console.log('daysago' + daysago);
+      var now = (new Date).getTime();
+      function cb_done(data) {
+        if (numOutstandingWikis > 0) {
+          setTimeout(function(){cb_done(data)}, 200);
+          return;
+        }
+        console.log("OMG RETURNING");
+        resp['data'] = data;
+        sendResponse(resp);
+      }
+      iterateHistory(cb_hitem, cb_done, now-interval, now);
+    }
+  });
+
+
+chrome.tabs.create({'url':"index.html"});
+
+
+// var interval = 1000 * 60 * 60 * 24; // 1 hour -- should be less than 100 right?
+// var startTime = lastProcessedTime();
+// iterateHistory(cb, startTime, startTime+interval);
+
+
+
+
+// iterate through each history item
+//   mostrecent = localstorage['mostrecenttstamp']
+//   chrome.history.search( most recent to now )
+//   callback iterates through
+//      extract url
+//      
+// optional: filter for news content (somehow)
+// extract hostname
+// increment count of hostname
+
+// for each hostname i've seen
+//   lookup ownership information
+//   increment count for owner
+//  
+// visualization:
+//   pick topk owners, group the rest as "others"
+// //   fancy visualization code
+
+// chrome.webRequest.onBeforeRequest.addListener(
+//   function(info) {
+//     console.log("Cat intercepted: " + info.url);
+//     // Redirect the lolcal request to a random loldog URL.
+//     var i = Math.round(Math.random() * loldogs.length);
+//     return {redirectUrl: loldogs[i]};
+//   },
+//   // filters
+//   {
+//     urls: [
+//       "http://icanhascheezburger.files.wordpress.com/*",
+//       "http://chzmemebase.files.wordpress.com/*",
+//     ],
+//     types: ["image"]
+//   },
+//   // extraInfoSpec
+//   ["blocking"]);
+</script>
+</head>
+<body>
+</body>
+</html>
