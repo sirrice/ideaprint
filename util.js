@@ -12,8 +12,8 @@ function domainToWiki(domain, cb) {
   $.getJSON(url, q, function(data) {
     numOutstandingWikis--;
     if ('error' in data) {
-      window.localStorage[domain] = JSON.stringify({'name':domain});
-      cb(true);
+      //window.localStorage[domain] = JSON.stringify({'name':domain});
+      cb(false);
     } else if ('parse' in data) {
 
       name = data.parse.title
@@ -30,7 +30,7 @@ function domainToWiki(domain, cb) {
                                                     'infobox':info});
       cb(true);
     } else {
-      window.localStorage[domain] = JSON.stringify({'name':domain});
+      //window.localStorage[domain] = JSON.stringify({'name':domain});
       cb(false);
     }
      console.log("numOutstandingWikis="+numOutstandingWikis) ;
